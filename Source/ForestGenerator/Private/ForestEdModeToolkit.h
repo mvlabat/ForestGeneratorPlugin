@@ -3,12 +3,16 @@
 #include "Toolkits/BaseToolkit.h"
 #include "SharedPointer.h"
 
+class FEdModeForest;
+
 /**
 * Public interface to Foliage Edit mode.
 */
 class FForestEdModeToolkit : public FModeToolkit
 {
 public:
+	FForestEdModeToolkit(FEdMode *InOwningMode);
+
 	virtual void RegisterTabSpawners(const TSharedRef<class FTabManager>& TabManager) override;
 	virtual void UnregisterTabSpawners(const TSharedRef<class FTabManager>& TabManager) override;
 
@@ -21,9 +25,7 @@ public:
 	virtual class FEdMode* GetEditorMode() const override;
 	virtual TSharedPtr<class SWidget> GetInlineContent() const override;
 
-	void RefreshFullList();
-	void NotifyFoliageTypeMeshChanged(class UFoliageType* FoliageType);
-
 private:
-	TSharedPtr< class SFoliageEdit > FoliageEdWidget;
+	FEdMode *ForestEdMode;
+	TSharedPtr< class SForestEdit > ForestEdWidget;
 };

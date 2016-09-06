@@ -2,8 +2,7 @@
 
 #include "ForestGeneratorPrivatePCH.h"
 #include "ForestEdMode.h"
-#include "EditorStyle.h"
-#include "EditorModeRegistry.h"
+#include "../Public/ForestGeneratorModule.h"
 
 #define LOCTEXT_NAMESPACE "FForestGeneratorModule"
 
@@ -12,7 +11,7 @@ void FForestGeneratorModule::StartupModule()
 	FEditorModeRegistry::Get().RegisterMode<FEdModeForest>(
 		TEXT("EM_Forest"),
 		NSLOCTEXT("EditorModes", "ForestMode", "Forest"),
-		FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.FoliageMode", "LevelEditor.FoliageMode.Small"),
+		FSlateIcon(),
 		true, 400
 		);
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ForestEdModeToolkit.h"
+
 struct FFoliageMeshUIInfo;
 typedef TSharedPtr<FFoliageMeshUIInfo> FFoliageMeshUIInfoPtr; //should match typedef in FoliageEdMode.h
 
@@ -11,5 +13,10 @@ public:
 
 public:
 	/** SCompoundWidget functions */
-	void Construct(const FArguments& InArgs);
+	void Construct(const FArguments& InArgs, TSharedRef<FForestEdModeToolkit> InParentToolkit, FEdMode* InOwningMode);
+
+	FEdMode* GetEditorMode() const;
+
+private:
+	FEdMode* ForestEditMode;
 };

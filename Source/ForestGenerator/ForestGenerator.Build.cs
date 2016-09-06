@@ -41,6 +41,7 @@ public class ForestGenerator : ModuleRules
 				"SlateCore",
                 "UnrealEd",
                 "Landscape",
+                "InputCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

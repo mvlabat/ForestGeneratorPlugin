@@ -1,25 +1,68 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #include "ForestGeneratorPrivatePCH.h"
-#include "UnrealEd.h"
-
 #include "SForestEdit.h"
-#include "Editor/IntroTutorials/Public/IIntroTutorials.h"
 
-#define LOCTEXT_NAMESPACE "FoliageEd_Mode"
+#include "SNumericEntryBox.h"
+
+#define LOCTEXT_NAMESPACE "ForestEd_Mode"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
-void SForestEdit::Construct(const FArguments& InArgs)
+void SForestEdit::Construct(const FArguments& InArgs, TSharedRef<FForestEdModeToolkit> InParentToolkit, FEdMode* InOwningMode)
 {
-	IIntroTutorials& IntroTutorials = FModuleManager::LoadModuleChecked<IIntroTutorials>(TEXT("IntroTutorials"));
+	ForestEditMode = InOwningMode;
+	FMargin StandardPadding(0.0f, 5.0f, 0.0f, 4.0f);
 
-	// Everything (or almost) uses this padding, change it to expand the padding.
-	FMargin StandardPadding(6.f, 3.f);
-	FMargin StandardLeftPadding(6.f, 3.f, 3.f, 3.f);
-	FMargin StandardRightPadding(3.f, 3.f, 6.f, 3.f);
+	//const float BrushRadius = ForestEditMode->GetBrushRadiiDefault();
 
-	FSlateFontInfo StandardFont = FEditorStyle::GetFontStyle(TEXT("PropertyWindow.NormalFont"));
+	//float MinBrushSliderRadius, MaxBrushSliderRadius;
+	//ForestEditMode->GetBrushRadiiSliderLimits(MinBrushSliderRadius, MaxBrushSliderRadius);
+
+	ChildSlot
+	[
+		SNew(SScrollBox)
+			+ SScrollBox::Slot()
+			.Padding(0.0f)
+			[
+				SNew(SVerticalBox)
+				+ SVerticalBox::Slot()
+				.AutoHeight()
+				.Padding(StandardPadding)
+				[
+					SNew(SHorizontalBox)
+					+ SHorizontalBox::Slot()
+					.FillWidth(1.0f)
+					.HAlign(HAlign_Left)
+					.VAlign(VAlign_Center)
+					[
+						SNew(STextBlock)
+						.Text(LOCTEXT("ForestEdit_LabelRadius", "Radius"))
+					]
+					+ SHorizontalBox::Slot()
+					.FillWidth(1.0f)
+					.HAlign(HAlign_Left)
+					.VAlign(VAlign_Center)
+					[
+						SNew(SNumericEntryBox<float>)
+						.AllowSpin(true)
+						.MinSliderValue(1.f)
+						.MaxSliderValue(256.f)
+						.MinValue(0.1f)
+						.MaxValue(250000.f)
+						//.Value(this, 100.f)
+						//.OnValueChanged(this )
+					]
+				]
+			]
+	];
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FEdMode* SForestEdit::GetEditorMode() const
+{
+	return ForestEditMode;
+}
+
+
 
 #undef LOCTEXT_NAMESPACE

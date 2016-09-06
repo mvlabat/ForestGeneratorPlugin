@@ -1,11 +1,18 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #include "ForestGeneratorPrivatePCH.h"
-#include "UnrealEd.h"
 #include "ForestEdModeToolkit.h"
+
 #include "SForestEdit.h"
 
 #define LOCTEXT_NAMESPACE "FoliageEditMode"
+
+
+FForestEdModeToolkit::FForestEdModeToolkit(FEdMode* InOwningMode)
+	: ForestEdMode(InOwningMode)
+{
+
+}
 
 void FForestEdModeToolkit::RegisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
 {
@@ -19,7 +26,7 @@ void FForestEdModeToolkit::UnregisterTabSpawners(const TSharedRef<class FTabMana
 
 void FForestEdModeToolkit::Init(const TSharedPtr< class IToolkitHost >& InitToolkitHost)
 {
-	FoliageEdWidget = SNew(SForestEdit);
+	ForestEdWidget = SNew(SForestEdit, SharedThis(this), ForestEdMode);
 
 	FModeToolkit::Init(InitToolkitHost);
 }
@@ -36,22 +43,12 @@ FText FForestEdModeToolkit::GetBaseToolkitName() const
 
 class FEdMode* FForestEdModeToolkit::GetEditorMode() const
 {
-	return GLevelEditorModeTools().GetActiveMode(TEXT("EM_Forest"));
+	return ForestEdMode;
 }
 
 TSharedPtr<SWidget> FForestEdModeToolkit::GetInlineContent() const
 {
-	return FoliageEdWidget;
-}
-
-void FForestEdModeToolkit::RefreshFullList()
-{
-	//FoliageEdWidget->RefreshFullList();
-}
-
-void FForestEdModeToolkit::NotifyFoliageTypeMeshChanged(class UFoliageType* FoliageType)
-{
-	//FoliageEdWidget->NotifyFoliageTypeMeshChanged(FoliageType);
+	return ForestEdWidget;
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -1,9 +1,9 @@
 #include "ForestGeneratorPrivatePCH.h"
 #include "ForestEdMode.h"
+
 #include "ForestEdModeToolkit.h"
 
 #include "EditorModes.h"
-#include "EditorStyle.h"
 #include "ToolkitManager.h"
 
 
@@ -18,14 +18,13 @@ FEdModeForest::~FEdModeForest()
 
 }
 
-
 void FEdModeForest::Enter()
 {
 	FEdMode::Enter();
 
 	if (!Toolkit.IsValid())
 	{
-		Toolkit = MakeShareable(new FForestEdModeToolkit);
+		Toolkit = MakeShareable(new FForestEdModeToolkit(this));
 		Toolkit->Init(Owner->GetToolkitHost());
 	}
 }
