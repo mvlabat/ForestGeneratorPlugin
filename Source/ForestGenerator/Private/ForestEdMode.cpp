@@ -6,6 +6,7 @@
 #include "EditorModes.h"
 #include "ToolkitManager.h"
 
+FForestEdModeSettings FForestEdModeSettings::StaticForestEdModeSettings;
 
 FEdModeForest::FEdModeForest()
 	: FEdMode()

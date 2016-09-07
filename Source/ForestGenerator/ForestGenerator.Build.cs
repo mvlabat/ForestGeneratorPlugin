@@ -42,6 +42,9 @@ public class ForestGenerator : ModuleRules
                 "UnrealEd",
                 "Landscape",
                 "InputCore",
+                "EditorStyle",
+                "ContentBrowser",
+                "PropertyEditor",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

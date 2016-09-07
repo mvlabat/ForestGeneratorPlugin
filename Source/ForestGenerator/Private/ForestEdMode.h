@@ -2,6 +2,44 @@
 
 #include "EdMode.h"
 #include "SharedPointer.h"
+#include "Engine/Blueprint.h"
+
+struct FTreeBlueprintUIInfo {
+	UBlueprint* Blueprint;
+	float TreeRadius; // TODO: is not used currently
+};
+
+/**
+ * ForestEdMode Settings
+ */
+class FForestEdModeSettings {
+public:
+
+	static FForestEdModeSettings& Get()
+	{
+		return StaticForestEdModeSettings;
+	}
+
+protected:
+
+	static FForestEdModeSettings StaticForestEdModeSettings;
+
+public:
+
+	FForestEdModeSettings()
+	: ForestRadius(500)
+	, ForestDensity(20)
+	{ }
+
+public:
+
+	float ForestRadius;
+
+	float ForestDensity;
+
+	TArray<TSharedPtr<FTreeBlueprintUIInfo>> ForestBlueprints;
+
+};
 
 class FEdModeForest : public FEdMode
 {
@@ -13,10 +51,4 @@ public:
 
 	virtual void Exit() override;
 
-protected:
-	/** Editor Mode Toolkit that is associated with this toolkit mode */
-	TSharedPtr<class FModeToolkit> Toolkit;
-
-	/** Pointer back to the mode tools that we are registered with */
-	FEditorModeTools* Owner;
 };
