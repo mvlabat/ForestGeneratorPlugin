@@ -4,43 +4,6 @@
 #include "SharedPointer.h"
 #include "Engine/Blueprint.h"
 
-struct FTreeBlueprintUIInfo {
-	UBlueprint* Blueprint;
-	float TreeRadius; // TODO: is not used currently
-};
-
-/**
- * ForestEdMode Settings
- */
-class FForestEdModeSettings {
-public:
-
-	static FForestEdModeSettings& Get()
-	{
-		return StaticForestEdModeSettings;
-	}
-
-protected:
-
-	static FForestEdModeSettings StaticForestEdModeSettings;
-
-public:
-
-	FForestEdModeSettings()
-	: ForestRadius(500)
-	, ForestDensity(20)
-	{ }
-
-public:
-
-	float ForestRadius;
-
-	float ForestDensity;
-
-	TArray<TSharedPtr<FTreeBlueprintUIInfo>> ForestBlueprints;
-
-};
-
 class FEdModeForest : public FEdMode
 {
 public:
@@ -57,7 +20,11 @@ public:
 
 	virtual bool CapturedMouseMove(FEditorViewportClient* InViewportClient, FViewport* InViewport, int32 InMouseX, int32 InMouseY) override;
 
+	bool HandleClick(FEditorViewportClient* InViewportClient, HHitProxy *HitProxy, const FViewportClick &Click) override;
+
 private:
+
+	void PlaceTrees(AActor* Actor);
 
 	void ForceRealTimeViewports(bool bEnable, bool bStoreCurrentState);
 

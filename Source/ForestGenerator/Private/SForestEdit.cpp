@@ -3,7 +3,7 @@
 #include "ForestGeneratorPrivatePCH.h"
 #include "SForestEdit.h"
 
-#include "ForestEdMode.h"
+#include "ForestEdModeSettings.h"
 
 #include "ContentBrowserModule.h"
 #include "SNumericEntryBox.h"
@@ -222,7 +222,7 @@ void SForestEdit::OnTreeBlueprintSelected(const FAssetData& AssetData)
 
 	//Adds a new item to the array (do whatever you want with this)
 	FForestEdModeSettings::Get().ForestBlueprints.Add(BlueprintInfo);
- 
+
 	//Update the listview
 	ListWidgetView->RequestListRefresh();
 }

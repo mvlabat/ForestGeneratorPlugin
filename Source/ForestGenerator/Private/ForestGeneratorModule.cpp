@@ -1,7 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #include "ForestGeneratorPrivatePCH.h"
-#include "ForestEdMode.h"
+#include "ForestEdModeSettings.h"
 #include "../Public/ForestGeneratorModule.h"
 
 #define LOCTEXT_NAMESPACE "FForestGeneratorModule"
@@ -22,5 +22,5 @@ void FForestGeneratorModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FForestGeneratorModule, ForestGenerator)

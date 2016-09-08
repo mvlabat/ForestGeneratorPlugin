@@ -1,7 +1,9 @@
 #include "ForestGeneratorPrivatePCH.h"
 #include "ForestEdMode.h"
 
+#include "ForestEdModeSettings.h"
 #include "ForestEdModeToolkit.h"
+#include "ForestEdTreePlacer.h"
 
 #include "EditorModes.h"
 #include "ToolkitManager.h"
@@ -9,13 +11,9 @@
 #include "LevelEditor.h"
 #include "SLevelViewport.h"
 #include "LandscapeHeightfieldCollisionComponent.h"
-#include "InstancedFoliageActor.h"
-#include "InstancedFoliage.h"
 #include "ProceduralFoliageBlockingVolume.h"
 
 #define LOCTEXT_NAMESPACE "FoliageEdMode"
-
-FForestEdModeSettings FForestEdModeSettings::StaticForestEdModeSettings;
 
 FEdModeForest::FEdModeForest()
 	: FEdMode()
@@ -127,6 +125,29 @@ bool FEdModeForest::CapturedMouseMove(FEditorViewportClient* InViewportClient, F
 	return MouseMove(InViewportClient, InViewport, InMouseX, InMouseY);
 }
 
+bool FEdModeForest::HandleClick(FEditorViewportClient* InViewportClient, HHitProxy *HitProxy, const FViewportClick &Click)
+{
+
+	if (HitProxy && HitProxy->IsA(HActor::StaticGetType()))
+	{
+		GEditor->BeginTransaction(NSLOCTEXT("UnrealEd", "ForestMode_EditTransaction", "Forest Adding"));
+
+		PlaceTrees(((HActor*)HitProxy)->Actor);
+
+		GEditor->EndTransaction();
+	}
+
+	return true;
+
+	return FEdMode::HandleClick(InViewportClient, HitProxy, Click);
+}
+
+void FEdModeForest::PlaceTrees(AActor* Actor)
+{
+	FForestEdTreePlacer TreePlacer(Actor->GetWorld(), BrushLocation);
+	TreePlacer.Run();
+}
+
 void FEdModeForest::ForceRealTimeViewports(const bool bEnable, const bool bStoreCurrentState)
 {
 	FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
@@ -162,12 +183,7 @@ void FEdModeForest::ForestBrushTrace(FEditorViewportClient* ViewportClient, cons
 		UWorld* World = ViewportClient->GetWorld();
 		static FName NAME_ForestBrush = FName(TEXT("ForestBrush"));
 
-		FFoliageTraceFilterFunc FilterFunc([](const UPrimitiveComponent* Component) -> bool
-		{
-			return Component && Component->IsA(ULandscapeHeightfieldCollisionComponent::StaticClass());
-		});
-
-		if (AInstancedFoliageActor::FoliageTrace(World, Hit, FDesiredFoliageInstance(TraceStart, TraceEnd), NAME_ForestBrush, false, FilterFunc))
+		if (AInstancedFoliageActor::FoliageTrace(World, Hit, FDesiredFoliageInstance(TraceStart, TraceEnd), NAME_ForestBrush, false, FForestEdTreePlacer::FilterFunc))
 		{
 			UPrimitiveComponent* PrimComp = Hit.Component.Get();
 			//if (CanPaint(PrimComp->GetComponentLevel()))

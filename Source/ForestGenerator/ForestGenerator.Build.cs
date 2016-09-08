@@ -6,23 +6,23 @@ public class ForestGenerator : ModuleRules
 {
 	public ForestGenerator(TargetInfo Target)
 	{
-		
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				"ForestGenerator/Public"
 				// ... add public include paths required here ...
 			}
 			);
-				
-		
+
+
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				"ForestGenerator/Private",
 				// ... add other private include paths required here ...
 			}
 			);
-			
-		
+
+
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -30,8 +30,8 @@ public class ForestGenerator : ModuleRules
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
-			
-		
+
+
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -47,11 +47,11 @@ public class ForestGenerator : ModuleRules
                 "PropertyEditor",
                 "LevelEditor",
                 "Foliage",
-				// ... add private dependencies that you statically link with here ...	
+				// ... add private dependencies that you statically link with here ...
 			}
 			);
-		
-		
+
+
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]
 			{
