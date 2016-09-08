@@ -45,6 +45,8 @@ public class ForestGenerator : ModuleRules
                 "EditorStyle",
                 "ContentBrowser",
                 "PropertyEditor",
+                "LevelEditor",
+                "Foliage",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
