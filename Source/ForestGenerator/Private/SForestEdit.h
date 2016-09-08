@@ -32,6 +32,7 @@ protected:
 
 	TSharedRef<SWidget> GetAddTreeBlueprintPicker();
 	void OnTreeBlueprintSelected(const FAssetData& AssetData);
+	FReply OnDeleteAllClicked();
 	TSharedRef<ITableRow> OnGenerateRowForList(TSharedPtr<FTreeBlueprintUIInfo> Item, const TSharedRef<STableViewBase>& OwnerTable);
 
 

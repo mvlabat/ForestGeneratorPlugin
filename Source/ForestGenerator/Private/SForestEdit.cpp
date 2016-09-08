@@ -115,31 +115,61 @@ void SForestEdit::Construct(const FArguments& InArgs, TSharedRef<FForestEdModeTo
 							.AutoHeight()
 							.Padding(StandardPadding)
 							[
-								SAssignNew(AddTreeBlueprintCombo, SComboButton)
-								.ForegroundColor(FLinearColor::White)
-								.ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
-								.OnGetMenuContent(this, &SForestEdit::GetAddTreeBlueprintPicker)
-								.ContentPadding(FMargin(1.f))
-								.ButtonContent()
+								SNew(SHorizontalBox)
+								+SHorizontalBox::Slot()
+								.VAlign(VAlign_Center)
+								.AutoWidth()
+								.Padding(1.f)
 								[
-									SNew(SHorizontalBox)
-									+ SHorizontalBox::Slot()
-									.VAlign(VAlign_Center)
-									.AutoWidth()
-									.Padding(1.f)
+									SAssignNew(AddTreeBlueprintCombo, SComboButton)
+									.ForegroundColor(FLinearColor::White)
+									.ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+									.OnGetMenuContent(this, &SForestEdit::GetAddTreeBlueprintPicker)
+									.ContentPadding(FMargin(1.f))
+									.ButtonContent()
 									[
-										SNew(STextBlock)
-										.TextStyle(FEditorStyle::Get(), "ForestEditMode.AddTreeBlueprint.Text")
-										.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.9"))
-										.Text(FText::FromString(FString(TEXT("\xf067"))) /*fa-plus*/)
+										SNew(SHorizontalBox)
+										+ SHorizontalBox::Slot()
+										.VAlign(VAlign_Center)
+										.AutoWidth()
+										.Padding(1.f)
+										[
+											SNew(STextBlock)
+											.TextStyle(FEditorStyle::Get(), "ForestEditMode.AddTreeBlueprint.Text")
+											.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.9"))
+											.Text(FText::FromString(FString(TEXT("\xf067"))) /*fa-plus*/)
+										]
+										+ SHorizontalBox::Slot()
+										.VAlign(VAlign_Center)
+										.Padding(1.f)
+										[
+											SNew(STextBlock)
+											.Text(LOCTEXT("AddTreeBlueprintButtonLabel", "Add Tree Blueprint"))
+											.TextStyle(FEditorStyle::Get(), "ForestEditMode.AddTreeBlueprint.Text")
+										]
 									]
-									+ SHorizontalBox::Slot()
-									.VAlign(VAlign_Center)
-									.Padding(1.f)
+								]
+								+SHorizontalBox::Slot()
+								.VAlign(VAlign_Center)
+								.AutoWidth()
+								.Padding(1.f)
+								[
+									SNew(SBox)
+									.WidthOverride(64)
+									.HeightOverride(64)
 									[
-										SNew(STextBlock)
-										.Text(LOCTEXT("AddTreeBlueprintButtonLabel", "Add Tree Blueprint"))
-										.TextStyle(FEditorStyle::Get(), "ForestEditMode.AddTreeBlueprint.Text")
+									  SNew(SButton)
+										.ButtonStyle(FCoreStyle::Get(), "NoBorder")
+										.OnClicked(this, &SForestEdit::OnDeleteAllClicked)
+										.HAlign(HAlign_Center)
+										.VAlign(VAlign_Center)
+										.ForegroundColor(FSlateColor::UseForeground())
+										[
+											//Button Content Image
+											TSharedRef<SWidget>(SNew(SImage).Image(
+												FCoreStyle::Get().GetBrush("TrashCan")
+											))
+										]
 									]
 								]
 							]
@@ -225,6 +255,13 @@ void SForestEdit::OnTreeBlueprintSelected(const FAssetData& AssetData)
 
 	//Update the listview
 	ListWidgetView->RequestListRefresh();
+}
+
+FReply SForestEdit::OnDeleteAllClicked()
+{
+	FForestEdModeSettings::Get().ForestBlueprints.Empty();
+	ListWidgetView->RequestListRefresh();
+	return FReply::Handled();
 }
 
 TSharedRef<ITableRow> SForestEdit::OnGenerateRowForList(TSharedPtr<FTreeBlueprintUIInfo> Item, const TSharedRef<STableViewBase>& OwnerTable)
